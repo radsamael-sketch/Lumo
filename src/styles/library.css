@@ -1,0 +1,109 @@
+.library-panel > .panel-heading { margin-bottom: 18px; padding-bottom: 13px; border-bottom: 1px solid var(--soft-line); }
+.library-panel > .panel-heading h2 { margin: 0; }
+.library-panel > .panel-heading .small-primary { margin: 0; white-space: nowrap; }
+.library-controls { display: flex; align-items: center; gap: 12px; margin: 15px 0; }
+.library-search { display: flex; min-width: 0; flex: 1; align-items: center; gap: 9px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 15px 15px 15px 6px; background: var(--surface); color: var(--muted); }
+.library-search input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 12px; }
+.library-type-filter { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+.library-type-filter select, .library-form input, .library-form textarea { padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 12px; }
+.library-type-filter select { min-width: 125px; }
+.library-form { display: grid; gap: 13px; margin: 16px 0; padding: 17px; border: 1px solid var(--line); border-radius: 21px 21px 21px 8px; background: #c5d8c3; }
+.library-form-heading { display: flex; align-items: center; justify-content: space-between; color: var(--ink); font: 400 16px/1.2 var(--font-display); }
+.library-form-heading .icon-button { width: 32px; height: 32px; }
+.library-form label { display: grid; gap: 6px; color: var(--ink); font-size: 11px; font-weight: 700; }
+.library-form input, .library-form textarea { width: 100%; font-weight: 400; }
+.library-form textarea { min-height: 54px; resize: vertical; }
+.library-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.library-form-hint { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.library-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.library-form-actions .small-secondary, .library-form-actions .primary { margin: 0; }
+.library-form-actions .primary { padding: 9px 13px; }
+.library-notice, .library-error { margin: 12px 0; }
+.library-item { display: flex; align-items: flex-start; gap: 14px; padding: 19px 14px; border-bottom: 1px solid var(--soft-line); border-radius: 13px 13px 13px 5px; transition: background .16s ease; }
+.library-item:nth-child(odd) { background: rgb(233 223 210 / 42%); }
+.library-item:last-child { border-bottom: 0; }
+.library-icon { display: grid; width: 38px; height: 38px; flex: none; place-items: center; margin-top: 1px; border-radius: 11px 11px 11px 4px; background: #edbd43; color: #29252a; }
+.library-item-content { min-width: 0; flex: 1; }
+.library-item-title { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+.library-item-title b { color: var(--ink); font-size: 13px; }
+.library-item-title span { padding: 4px 8px; border-radius: 999px; background: var(--info-bg); color: var(--info-ink); font-size: 9px; font-weight: 700; }
+.library-item-content > small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; white-space: pre-wrap; }
+.library-item-content > a { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; color: var(--wine); font-size: 11px; font-weight: 700; text-decoration: none; }
+.library-item-content > a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.library-item-actions { display: flex; gap: 6px; }
+.library-item-actions .icon-button { width: 32px; height: 32px; }
+
+@media (max-width: 620px) {
+  .library-controls { align-items: stretch; flex-direction: column; }
+  .library-type-filter { justify-content: space-between; }
+  .library-type-filter select { flex: 1; }
+  .library-form-grid { grid-template-columns: 1fr; }
+  .library-item { gap: 9px; }
+  .library-item-actions { gap: 4px; }
+}
+
+.library-item { position: relative; }
+.library-item:nth-child(4n + 1) .library-icon { background: var(--dusty-rose); color: var(--wine); }
+.library-item:nth-child(4n + 2) .library-icon { background: var(--blue); color: #315c68; }
+.library-item:nth-child(4n + 3) .library-icon { background: var(--butter); color: #66502a; }
+.library-item:nth-child(4n) .library-icon { background: var(--mint); color: var(--olive); }
+.library-item-title span { border: 1px solid rgb(49 92 104 / 15%); }
+
+/* Collectible-paper treatment and varied colour accents */
+.library-panel { position: relative; }
+.library-panel::after {
+  content: none;
+  position: absolute;
+  top: 17px;
+  right: 18px;
+  color: #fffaf2;
+  padding: 6px 8px;
+  border: 1px solid #29252a;
+  background: #b51f43;
+  font: 700 8px/1 'Space Mono', monospace;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+.library-form { background: #e8c17c; border-color: #c99b4e; }
+.library-item:nth-child(3n + 1) { background: rgb(217 135 135 / 32%); }
+.library-item:nth-child(3n + 2) { background: rgb(79 145 173 / 22%); }
+.library-item:nth-child(3n) { background: rgb(237 189 67 / 24%); }
+.library-item:nth-child(4n + 1) .library-icon { transform: rotate(-4deg); box-shadow: 2px 2px 0 rgb(41 37 42 / 12%); }
+.library-item:nth-child(4n + 2) .library-icon { transform: rotate(3deg); box-shadow: 2px 2px 0 rgb(41 37 42 / 12%); }
+
+
+/* Library archive: retro desktop-window tabs and sticker-like item labels */
+.library-panel { border: 1.5px solid #29252a; box-shadow: 3px 4px 0 #29252a; }
+.library-panel > .panel-heading { border-bottom: 2px solid #29252a; }
+.library-item { border: 1px solid rgb(41 37 42 / 22%); margin: 7px 0; padding: 13px 14px; box-shadow: 2px 2px 0 rgb(41 37 42 / 12%); }
+.library-item:nth-child(4n + 1) { background: #e8c17c; }
+.library-item:nth-child(4n + 2) { background: #b8d4dc; }
+.library-item:nth-child(4n + 3) { background: #c5d8c3; }
+.library-item:nth-child(4n) { background: #d98787; }
+.library-item-title span { background: #fff8e9; color: #29252a; border: 1px solid #29252a; box-shadow: 1px 2px 0 rgb(41 37 42 / 45%); }
+.library-icon { border: 1px solid #29252a; box-shadow: 2px 2px 0 #29252a; }
+
+/* LUMO archive: tactile paper collection with deep, alternating covers */
+.library-panel { background: #e3b83f; border: 1.5px solid #211b20; box-shadow: 4px 5px 0 #211b20; }
+.library-panel > .panel-heading { border-color: rgb(33 27 32 / 28%); }
+.library-form { background: #164f3e; border: 1.5px solid #103b30; box-shadow: 3px 4px 0 #211b20; }
+.library-form-heading, .library-form label { color: #fff9ef; }
+.library-form-hint { color: #e0eadf; }
+.library-item { position: relative; margin: 8px 0; padding: 15px 14px; border: 1.5px solid #211b20; border-radius: 13px 13px 13px 5px; box-shadow: 3px 4px 0 rgb(33 27 32 / 75%); }
+.library-item:nth-child(4n + 1) { background: #8f1d3d; }
+.library-item:nth-child(4n + 1) .library-item-title b,
+.library-item:nth-child(4n + 1) .library-item-content > small { color: #fff9ef; }
+.library-item:nth-child(4n + 2) { background: #347e9e; }
+.library-item:nth-child(4n + 2) .library-item-title b,
+.library-item:nth-child(4n + 2) .library-item-content > small { color: #fff9ef; }
+.library-item:nth-child(4n + 3) { background: #164f3e; }
+.library-item:nth-child(4n + 3) .library-item-title b,
+.library-item:nth-child(4n + 3) .library-item-content > small { color: #fff9ef; }
+.library-item:nth-child(4n) { background: #e3b83f; }
+.library-item-title span { border: 1px solid #211b20; border-radius: 3px 8px 4px 7px; background: #fff9ef; color: #211b20; box-shadow: 2px 2px 0 #211b20; }
+.library-icon { width: 44px; height: 44px; border: 1.5px solid #211b20; border-radius: 5px 13px 6px 11px; box-shadow: 2px 3px 0 #211b20; }
+.library-item:nth-child(4n + 1) .library-icon { background: #e3b83f; color: #211b20; }
+.library-item:nth-child(4n + 2) .library-icon { background: #c77a7b; color: #211b20; }
+.library-item:nth-child(4n + 3) .library-icon { background: #e3b83f; color: #211b20; }
+.library-item:nth-child(4n) .library-icon { background: #347e9e; color: #fff9ef; }
+.library-item:nth-child(odd)::after { content: ''; position: absolute; top: -7px; left: 36px; width: 52px; height: 15px; border: 1px solid rgb(33 27 32 / 18%); background: rgb(244 236 223 / 80%); transform: rotate(-4deg); pointer-events: none; }

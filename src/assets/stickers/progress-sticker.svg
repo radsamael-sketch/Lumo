@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 190">
+ <g transform="rotate(6 130 95)" stroke="#211b20" stroke-width="3" stroke-linejoin="round">
+  <path d="M75 24h110l-8 42 24 85-71-20-71 20 24-85z" fill="#e3b83f"/>
+  <path d="M75 24h110l-5 22H80z" fill="#b51f43"/>
+  <circle cx="130" cy="84" r="42" fill="#164f3e"/>
+  <path d="M108 85l15 15 31-35" fill="none" stroke="#fff9ef" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 40l11 8 13-3-5 13 6 12-14-2-10 9-2-14-12-8 13-4z" fill="#347e9e"/>
+  <path d="M202 42l12-23 12 23 25 3-19 16 5 24-23-12-22 12 4-25-19-15z" fill="#c77a7b"/>
+ </g>
+ <text x="130" y="174" text-anchor="middle" fill="#211b20" font-family="monospace" font-weight="bold" font-size="13">YOU DID IT!</text>
+</svg>
