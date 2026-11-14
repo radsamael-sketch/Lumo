@@ -1,11 +1,11 @@
-import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // GitHub Pages project sites are served from /<repository>/.
 // Local development and GitHub user/organization sites stay at /.
 export default defineConfig(({ mode }) => {
-  const githubRepository = loadEnv(mode, '.', '').GITHUB_REPOSITORY;
+  const githubRepository = process.env.GITHUB_REPOSITORY || loadEnv(mode, '.', '').GITHUB_REPOSITORY;
   const [githubOwner, githubRepo] = githubRepository?.split('/') ?? [];
   const isUserSite = Boolean(githubOwner && githubRepo === `${githubOwner}.github.io`);
   const base = githubRepo && !isUserSite ? `/${githubRepo}/` : '/';
