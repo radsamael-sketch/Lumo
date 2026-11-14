@@ -2,13 +2,20 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+declare const process: {
+  env: {
+    GITHUB_REPOSITORY?: string;
+  };
+};
+
 // GitHub Pages project sites are served from /<repository>/.
 // Local development and GitHub user/organization sites stay at /.
+// Production builds without repository metadata use the Lumo project path.
 export default defineConfig(({ mode }) => {
   const githubRepository = process.env.GITHUB_REPOSITORY || loadEnv(mode, '.', '').GITHUB_REPOSITORY;
   const [githubOwner, githubRepo] = githubRepository?.split('/') ?? [];
   const isUserSite = Boolean(githubOwner && githubRepo === `${githubOwner}.github.io`);
-  const base = githubRepo && !isUserSite ? `/${githubRepo}/` : '/';
+  const base = githubRepo && !isUserSite ? `/${githubRepo}/` : mode === 'production' ? '/Lumo/' : '/';
 
   return ({
   base,
