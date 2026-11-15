@@ -84,6 +84,34 @@ const canonical = (v: any): any =>
 
 const stable = (v: unknown) => JSON.stringify(canonical(v));
 
+/**
+ * Подготавливает записи перед импортом.
+ *
+ * У слов, созданных через Content Pack, должны быть значения,
+ * необходимые тренажёру словаря.
+ *
+ * Не задаём nextReviewAt: новые слова должны попадать
+ * в очередь новых слов, а не в очередь повторения.
+ */
+function prepareRecord(kind: Kind, row: Row): Row {
+  if (kind !== 'words') return row;
+
+  return {
+    ...row,
+    status:
+      row.status === 'learning' || row.status === 'learned'
+        ? row.status
+        : row.status === 'new'
+          ? 'new'
+          : 'new',
+    reviewIntervalDays:
+      typeof row.reviewIntervalDays === 'number' &&
+      Number.isFinite(row.reviewIntervalDays)
+        ? row.reviewIntervalDays
+        : 0
+  };
+}
+
 function validRecord(kind: Kind, row: Row) {
   const stringFields = required[kind].filter(
     field => !(kind === 'exercises' && field === 'payload')
@@ -319,7 +347,12 @@ export function ContentPackManager({
           throw new Error(`Duplicate IDs in ${kind}`);
         }
 
-        records[kind] = cleaned;
+        // Нормализуем записи до предварительного просмотра и импорта.
+        // Эти же подготовленные данные будут использоваться
+        // при добавлении и при обновлении существующих записей.
+        const prepared = cleaned.map(row => prepareRecord(kind, row));
+
+        records[kind] = prepared;
 
         const table = (db as any)[kind];
 
@@ -327,7 +360,7 @@ export function ContentPackManager({
         let update = 0;
         let conflict = 0;
 
-        for (const row of cleaned) {
+        for (const row of prepared) {
           const existing = await table.get(String(row.id));
 
           if (!existing) {
@@ -456,6 +489,9 @@ export function ContentPackManager({
                   const merged = { ...row, ...personal };
 
                   await table.put(merged);
+
+                  // Сохраняем подготовленную версию записи как baseline.
+                  // Поэтому повторный импорт не удалит значения по умолчанию.
                   originals[key] = row;
 
                   if (Object.keys(personal).length) {
