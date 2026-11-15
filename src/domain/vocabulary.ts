@@ -75,11 +75,20 @@ export function makeClozeSentence(
   }
 
   const escaped = escapeRegExp(word).replace(/\s+/g, '\\s+');
-  const match = new RegExp(`\\b${escaped}\\b`, 'i');
+  const match = new RegExp(
+    `(^|[^\\p{L}\\p{N}_])(${escaped})(?=$|[^\\p{L}\\p{N}_])`,
+    'iu'
+  );
 
-  if (!match.test(sentence)) return null;
+  const result = match.exec(sentence);
+  if (!result) return null;
 
-  return sentence.replace(match, '_____');
+  return (
+    sentence.slice(0, result.index) +
+    result[1] +
+    '_____' +
+    sentence.slice(result.index + result[0].length)
+  );
 }
 
 function isUsableInMode(
@@ -125,7 +134,7 @@ export function vocabularyQueue(
     // Legacy records without a status are treated as new.
     const isNew = !word.status || word.status === 'new';
 
-    return isNew && !due;
+    return isNew;
   });
 }
 

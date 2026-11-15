@@ -4,8 +4,10 @@
 .vocab-queue-controls > div:first-child { display: grid; gap: 5px; }
 .vocab-queue-controls b { color: var(--ink); font: 400 15px/1.2 var(--font-display); }
 .vocab-queue-controls small { max-width: 520px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.vocab-queue-actions { display: grid; justify-items: end; gap: 6px; }
 .vocab-queue-buttons { display: flex; align-items: center; gap: 8px; }
 .vocab-queue-buttons button { margin: 0; white-space: nowrap; }
+.vocab-queue-empty { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 12px; color: var(--muted); font-size: 11px; }
 .vocab-session { max-width: 780px; margin: 12px auto 0; }
 .vocab-session-top { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; }
 .vocab-session-top .eyebrow { margin: 0 auto 0 0; }
@@ -73,6 +75,8 @@
 
 @media (max-width: 620px) {
   .vocab-queue-controls { align-items: flex-start; flex-direction: column; }
+  .vocab-queue-actions { width: 100%; justify-items: stretch; }
+  .vocab-queue-empty { justify-content: flex-start; }
   .vocab-queue-buttons { width: 100%; }
   .vocab-queue-buttons button { flex: 1; padding-inline: 7px; }
   .vocab-flashcard, .vocab-card-face { min-height: 225px; }

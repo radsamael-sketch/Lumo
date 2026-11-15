@@ -36,6 +36,8 @@ test('creates cloze sentences only when the example contains the word or a blank
   assert.equal(vocabulary.makeClozeSentence('I eat an apple.', 'apple'), 'I eat an _____.');
   assert.equal(vocabulary.makeClozeSentence('The theme is clear.', 'he'), null);
   assert.equal(vocabulary.makeClozeSentence('I drink _____.', 'water'), 'I drink _____.');
+  assert.equal(vocabulary.makeClozeSentence('I use C++!', 'C++'), 'I use _____!');
+  assert.equal(vocabulary.makeClozeSentence('She moved to New   York,', 'new york'), 'She moved to _____,');
 });
 
 test('queues due and new words only when the selected mode has required data', () => {
@@ -43,6 +45,20 @@ test('queues due and new words only when the selected mode has required data', (
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'translation', 'due', now).map(word => word.id), ['due']);
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'translation', 'new', now).map(word => word.id), ['new', 'missing-example']);
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'context', 'new', now).map(word => word.id), ['new']);
+});
+
+test('keeps new words in the new queue and only valid elapsed dates in review', () => {
+  const now = new Date('2026-03-10T12:00:00.000Z');
+  const imported = [
+    {id: 'imported', term: 'alcohol', translation: 'алкоголь'},
+    {id: 'new-with-expired-date', term: 'water', translation: 'вода', status: 'new', nextReviewAt: '2026-03-09T12:00:00.000Z'},
+    {id: 'invalid-date', term: 'bread', translation: 'хлеб', status: 'learning', nextReviewAt: 'not-a-date'},
+    {id: 'future-date', term: 'milk', translation: 'молоко', status: 'learning', nextReviewAt: '2026-03-11T12:00:00.000Z'},
+  ];
+
+  assert.deepEqual(vocabulary.vocabularyQueue(imported, 'cards', 'new', now).map(word => word.id), ['imported', 'new-with-expired-date']);
+  assert.deepEqual(vocabulary.vocabularyQueue(imported, 'translation', 'due', now).map(word => word.id), ['new-with-expired-date']);
+  assert.deepEqual(vocabulary.vocabularyQueue(imported, 'context', 'new', now), []);
 });
 
 test('shuffles without mutating the source array and selects a date-stable real word', () => {
