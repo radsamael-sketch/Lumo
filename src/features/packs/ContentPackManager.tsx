@@ -85,13 +85,23 @@ const canonical = (v: any): any =>
 const stable = (v: unknown) => JSON.stringify(canonical(v));
 
 function validRecord(kind: Kind, row: Row) {
-  const fieldsOk = required[kind].every(
-    k => typeof row[k] === 'string' && String(row[k]).trim()
+  const stringFields = required[kind].filter(
+    field => !(kind === 'exercises' && field === 'payload')
+  );
+
+  const fieldsOk = stringFields.every(
+    field =>
+      typeof row[field] === 'string' &&
+      String(row[field]).trim().length > 0
   );
 
   const payloadOk =
     kind !== 'exercises' ||
-    (typeof row.payload === 'object' && row.payload !== null);
+    (
+      typeof row.payload === 'object' &&
+      row.payload !== null &&
+      !Array.isArray(row.payload)
+    );
 
   const url = typeof row.url === 'string' ? row.url : '';
 
@@ -264,7 +274,6 @@ export function ContentPackManager({
 
         const cleaned = rows as Row[];
 
-        // Расширенная диагностика некорректной записи
         const invalidRow = cleaned.find(
           r =>
             !r ||
@@ -275,8 +284,12 @@ export function ContentPackManager({
         if (invalidRow) {
           const missingFields = required[kind].filter(
             field =>
-              typeof invalidRow[field] !== 'string' ||
-              !String(invalidRow[field]).trim()
+              kind === 'exercises' && field === 'payload'
+                ? !invalidRow.payload ||
+                  typeof invalidRow.payload !== 'object' ||
+                  Array.isArray(invalidRow.payload)
+                : typeof invalidRow[field] !== 'string' ||
+                  !String(invalidRow[field]).trim()
           );
 
           const details = {
