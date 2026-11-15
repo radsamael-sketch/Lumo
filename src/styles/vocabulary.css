@@ -21,7 +21,23 @@
   border-radius: 28px 28px 28px 9px;
   background: radial-gradient(circle at 88% 14%, rgb(40 91 72 / 14%) 0 2px, transparent 2.5px) 0 0 / 18px 18px, linear-gradient(135deg, var(--surface) 25%, #e9dfd2);
   box-shadow: var(--shadow-card);
+  perspective: 1000px;
 }
+.vocab-card-inner {
+  display: grid;
+  min-height: 310px;
+  transform-style: preserve-3d;
+  transition: transform .6s;
+}
+.vocab-flashcard.revealed .vocab-card-inner { transform: rotateY(180deg); }
+.vocab-card-face, .vocab-card-back {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.vocab-flashcard:not(.revealed) .vocab-card-back,
+.vocab-flashcard.revealed .vocab-card-face { pointer-events: none; }
+.vocab-card-back { transform: rotateY(180deg); }
 .vocab-card-face {
   position: relative;
   display: flex;
@@ -79,7 +95,7 @@
   .vocab-queue-empty { justify-content: flex-start; }
   .vocab-queue-buttons { width: 100%; }
   .vocab-queue-buttons button { flex: 1; padding-inline: 7px; }
-  .vocab-flashcard, .vocab-card-face { min-height: 225px; }
+  .vocab-flashcard, .vocab-card-face, .vocab-card-inner { min-height: 225px; }
   .vocab-answer-panel { padding: 18px; }
   .vocab-cloze { font-size: 16px; }
   .vocab-rating button { min-width: 0; flex: 1; }
@@ -106,7 +122,7 @@
 .vocab-session-progress { background: #ead8cf; }
 .vocab-session-progress i { background: linear-gradient(90deg, #a52f4a, #cf5b4d); }
 .vocab-answer-panel { background: #b8d4dc; border-color: #7eaebd; }
-.vocab-card-back { background: #e8c17c; }
+.vocab-card-back { background: #851d3b; }
 .vocab-summary-result { background: #d98787; border-color: #b95b67; }
 .vocab-rating button:nth-child(1) { background: #c5d8c3; border-color: #91b18d; }
 .vocab-rating button:nth-child(2) { background: #edbd43; border-color: #c99b32; }
@@ -130,6 +146,7 @@
 .vocab-card-face span { color: #e0eadf; }
 .vocab-card-face::after { content: '✂'; position: absolute; left: 24px; top: 16px; color: #e3b83f; font: 700 30px/1 'Caveat', cursive; transform: rotate(-12deg); }
 .vocab-card-back { color: #fff9ef; }
+.vocab-card-back .transcription, .vocab-card-back .context, .vocab-card-back .vocab-example { color: #fff9ef; }
 .vocab-card-back > div > strong { color: #f0c75a; }
 .vocab-answer-panel { background: #347e9e; border: 1.5px solid #1d526b; box-shadow: 3px 4px 0 #211b20; }
 .vocab-answer-panel label, .vocab-answer-panel label b { color: #fff9ef; }

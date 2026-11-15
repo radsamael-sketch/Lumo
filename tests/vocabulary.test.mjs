@@ -10,8 +10,8 @@ const compiled = ts.transpileModule(source, {
 const vocabulary = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
 
 const words = [
-  {id: 'new', term: 'apple', translation: 'яблоко', status: 'new', reviewIntervalDays: 0, example: 'I eat an apple.'},
-  {id: 'due', term: 'book', translation: 'книга', status: 'learning', reviewIntervalDays: 1, example: 'I read a book.', nextReviewAt: '2026-03-09T12:00:00.000Z'},
+  {id: 'new', term: 'apple', translation: 'яблоко', status: 'new', reviewIntervalDays: 0, example: 'I eat an apple.', context: 'At the fruit stand.'},
+  {id: 'due', term: 'book', translation: 'книга', status: 'learning', reviewIntervalDays: 1, example: 'I read a book.', context: 'At the library.', nextReviewAt: '2026-03-09T12:00:00.000Z'},
   {id: 'missing-example', term: 'water', translation: 'вода', status: 'new', reviewIntervalDays: 0},
   {id: 'missing-translation', term: 'hello', translation: ' ', status: 'new', reviewIntervalDays: 0},
 ];
@@ -45,6 +45,21 @@ test('queues due and new words only when the selected mode has required data', (
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'translation', 'due', now).map(word => word.id), ['due']);
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'translation', 'new', now).map(word => word.id), ['new', 'missing-example']);
   assert.deepEqual(vocabulary.vocabularyQueue(words, 'context', 'new', now).map(word => word.id), ['new']);
+  assert.deepEqual(vocabulary.vocabularyQueue(words, 'context', 'due', now).map(word => word.id), ['due']);
+});
+
+test('excludes imported words missing an example or context from context exercises', () => {
+  const imported = [
+    {id: 'missing-both', term: 'water', translation: 'вода'},
+    {id: 'missing-context', term: 'apple', translation: 'яблоко', example: 'I eat an apple.'},
+    {id: 'missing-example', term: 'book', translation: 'книга', context: 'At the library.'},
+    {id: 'usable', term: 'bread', translation: 'хлеб', example: 'I bake bread.', context: 'In the kitchen.'},
+  ];
+
+  assert.deepEqual(vocabulary.vocabularyQueue(imported, 'cards', 'new').map(word => word.id), [
+    'missing-both', 'missing-context', 'missing-example', 'usable',
+  ]);
+  assert.deepEqual(vocabulary.vocabularyQueue(imported, 'context', 'new').map(word => word.id), ['usable']);
 });
 
 test('keeps new words in the new queue and only valid elapsed dates in review', () => {

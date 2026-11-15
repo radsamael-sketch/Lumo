@@ -100,7 +100,8 @@ function isUsableInMode(
   }
 
   if (mode === 'context') {
-    return makeClozeSentence(word.example, word.term) !== null;
+    return Boolean(word.context?.trim()) &&
+      makeClozeSentence(word.example, word.term) !== null;
   }
 
   return true;
